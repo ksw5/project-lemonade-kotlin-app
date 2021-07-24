@@ -118,22 +118,17 @@ class MainActivity : AppCompatActivity() {
                 squeezeCount = 0
             }
             SQUEEZE -> {
-                squeezeCount += 1
-                lemonSize -= 1
-                lemonadeState = if (lemonSize == 0) {
-                    DRINK
-                } else {
-                    SQUEEZE
+                squeezeCount ++
+                lemonSize --
+               if (lemonSize == 0) {
+                    lemonadeState = DRINK
+                   lemonSize = -1
                 }
             }
-            DRINK -> {
-                lemonadeState = RESTART
-                lemonSize = -1
-            }
-            else -> {
-                RESTART
-                lemonadeState = SELECT
-            }
+            DRINK -> lemonadeState = RESTART
+
+            RESTART -> lemonadeState = SELECT
+
         }
         setViewElements()
     }
@@ -143,44 +138,35 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setViewElements() {
         val textAction: TextView = findViewById(R.id.text_action)
-        val textView:   TextView = findViewById(R.id.action_text)
 
         // TODO: set up a conditional that tracks the lemonadeState
-        when (lemonadeState) {
-            SELECT -> run {
-                R.string.lemon_select
-                R.drawable.lemon_tree
-            }
-            SQUEEZE -> run {
-                R.string.lemon_squeeze
-                R.drawable.lemon_squeeze
-            }
-            DRINK -> run {
-                R.string.lemon_drink
-                R.drawable.lemon_drink
-            }
-            RESTART -> run {
-                R.string.lemon_empty_glass
-                R.drawable.lemon_restart
-            }
-
-        }
-
         // TODO: for each state, the textAction TextView should be set to the corresponding string from
         //  the string resources file. The strings are named to match the state
 
         // TODO: Additionally, for each state, the lemonImage should be set to the corresponding
         //  drawable from the drawable resources. The drawables have the same names as the strings
         //  but remember that they are drawables, not strings.
-    }
+        when (lemonadeState) {
+            SELECT -> {
+                textAction.setText(R.string.lemon_select)
+                lemonImage?.setImageResource(R.drawable.lemon_tree)
+            }
+            SQUEEZE -> {
+                textAction.setText(R.string.lemon_squeeze)
+                lemonImage?.setImageResource(R.drawable.lemon_squeeze)
+            }
+            DRINK -> {
+                textAction.setText(R.string.lemon_drink)
+                lemonImage?.setImageResource(R.drawable.lemon_drink)
+            }
+            RESTART -> {
+                textAction.setText(R.string.lemon_empty_glass)
+                lemonImage?.setImageResource(R.drawable.lemon_restart)
+            }
 
-    /*val drawableResource = when (diceRoll) {
-        1 -> R.drawable.dice_1
-        2 -> R.drawable.dice_2
-        3 -> R.drawable.dice_3
-        4 -> R.drawable.dice_4
-        5 -> R.drawable.dice_5
-        else -> R.drawable.dice_6*/
+        }
+
+    }
 
     /**
      * === DO NOT ALTER THIS METHOD ===
